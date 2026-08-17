@@ -1,0 +1,12 @@
+@define-color background {{base00_hex}};
+@define-color foreground {{base05_hex}};
+@define-color select {{base02_hex}};
+
+@define-color pink {{base0E_hex}};
+@define-color purple {{base0D_hex}};
+@define-color red {{base08_hex}};
+@define-color orange {{base09_hex}};
+@define-color yellow {{base0A_hex}};
+@define-color green {{base0B_hex}};
+@define-color blue {{base0C_hex}};
+@define-color gray {{base03_hex}};

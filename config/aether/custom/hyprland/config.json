@@ -1,0 +1,4 @@
+{
+    "template": "hyprland-appearance.conf",
+    "destination": "~/.config/hypr/conf/appearance.conf"
+}

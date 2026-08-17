@@ -1,0 +1,4 @@
+{
+    "template": "rofi-colors.rasi",
+    "destination": "~/.config/colors/colors.rasi"
+}

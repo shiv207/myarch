@@ -1,0 +1,16 @@
+#!/bin/bash
+case $1 in
+  raise) wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+ ;;
+  lower) wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- ;;
+  mute) wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle ;;
+esac
+
+# Show OSD in background (volume change already happened)
+VOL=$(wpctl get-volume @DEFAULT_AUDIO_SINK@)
+MUTED=$(echo "$VOL" | grep -c MUTED)
+PERCENT=$(echo "$VOL" | awk '{print $2}')
+if [ "$MUTED" -gt 0 ]; then
+  swayosd-client --custom-progress 0 --custom-icon "audio-volume-muted" &
+else
+  swayosd-client --custom-progress "$PERCENT" --custom-icon "audio-volume-high" &
+fi

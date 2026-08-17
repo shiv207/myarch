@@ -1,0 +1,7 @@
+#!/bin/bash
+# Launch Ghostty with a specific WM_CLASS for window rules
+# Usage: launch-tui <class> <command>
+
+WM_CLASS="$1"
+shift
+exec ghostty --class "$WM_CLASS" -e "$@"

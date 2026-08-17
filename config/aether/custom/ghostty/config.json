@@ -1,0 +1,4 @@
+{
+    "template": "ghostty-theme.conf",
+    "destination": "~/.config/ghostty/themes/aether-generated.conf"
+}

@@ -1,0 +1,4 @@
+{
+    "template": "swayosd.css",
+    "destination": "~/.config/swayosd/style.css"
+}

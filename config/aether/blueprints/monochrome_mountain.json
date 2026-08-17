@@ -1,0 +1,46 @@
+{
+  "name": "monochrome_mountain",
+  "palette": {
+    "colors": [
+      "#090909",
+      "#969696",
+      "#c3c3c3",
+      "#f2f2f2",
+      "#808080",
+      "#acacac",
+      "#dadada",
+      "#f8f8f8",
+      "#62605a",
+      "#a8a8a8",
+      "#d6d6d6",
+      "#f5f5f5",
+      "#929292",
+      "#bfbfbf",
+      "#eeeeee",
+      "#fcfcfc"
+    ],
+    "wallpaper": "/home/shiv/Pictures/Wallpapers/snow-covered-mountains-northern-india.jpg",
+    "extendedColors": {
+      "accent": "#808080",
+      "cursor": "#f8f8f8",
+      "selection_background": "#f8f8f8",
+      "selection_foreground": "#090909"
+    }
+  },
+  "adjustments": {
+    "blackPoint": 0,
+    "brightness": 0,
+    "contrast": 0,
+    "gamma": 1,
+    "highlights": 0,
+    "hueShift": 0,
+    "saturation": 0,
+    "shadows": 0,
+    "temperature": 0,
+    "tint": 0,
+    "vibrance": 0,
+    "whitePoint": 0
+  },
+  "settings": {},
+  "timestamp": 1784737492624
+}

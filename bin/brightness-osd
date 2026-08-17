@@ -1,0 +1,10 @@
+#!/bin/bash
+DEVICE=nvidia_0
+case $1 in
+  up|raise) brightnessctl -d "$DEVICE" s 5%+ ;;
+  down|lower) brightnessctl -d "$DEVICE" s 5%- ;;
+esac
+CURRENT=$(brightnessctl -d "$DEVICE" get)
+MAX=$(brightnessctl -d "$DEVICE" max)
+PERCENT=$(awk "BEGIN {printf \"%.2f\", $CURRENT / $MAX}")
+swayosd-client --custom-progress "$PERCENT" --custom-icon "display-brightness"

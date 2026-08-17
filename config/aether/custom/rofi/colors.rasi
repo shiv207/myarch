@@ -1,0 +1,22 @@
+* {
+    background: {{base00_hex}};
+    foreground: {{base05_hex}};
+    select: {{base02_hex}};
+
+    pink: {{base0E_hex}};
+    purple: {{base0D_hex}};
+    red: {{base08_hex}};
+    orange: {{base09_hex}};
+    yellow: {{base0A_hex}};
+    green: {{base0B_hex}};
+    blue: {{base0C_hex}};
+    gray: {{base03_hex}};
+
+    active-background: @select;
+    urgent-background: @red;
+    urgent-foreground: @background;
+    selected-background: @active-background;
+    selected-urgent-background: @urgent-background;
+    selected-active-background: @active-background;
+    bordercolor: @select;
+}
