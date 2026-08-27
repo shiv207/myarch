@@ -91,7 +91,7 @@ Verification gate: all five machine checks pass and you can list the repository 
 Read, in full: `install.sh`, `.zshrc`, `.zprofile`, `bin/vol-osd`, `bin/tui-float`, `bin/launch-tui`, `bin/brightness-osd`, `config/hypr/hyprland.conf`, `config/hypr/conf/programs.conf` and `config/hypr/conf/autostart.conf`.
 
 Note down, and state in your interim report:
-- Which binaries `autostart.conf` expects at login (waybar, swayosd-server, swaync, awww-daemon, fcitx5, cliphist, gtkthemes.sh, polkit agent).
+- Which binaries `autostart.conf` expects at login (swayosd-server, swaync, awww-daemon, fcitx5, cliphist, gtkthemes.sh, polkit agent). Note that the bar (Quickshell) is launched by a systemd user service, not autostart, so it will not appear here.
 - Which binaries `programs.conf` declares as the default terminal, file manager and browser.
 - That `config/hypr/conf/appearance.conf` is meant to be a symlink pointing to `~/.config/aether/theme/hyprland-hyprland-appearance.conf` (the live aether theme output). If you deploy it as a regular file first, you must convert it to this symlink before Phase 6.
 - That the string `/home/shiv` appears in several files and must be rewritten to the target user's home directory during Phase 4 (see the command reference).
@@ -110,19 +110,19 @@ Procedure:
 4. Install the extras list with the same command. The extras are personal applications (Spotify, WhatsApp, Obsidian, VS Code, LocalSend, oh-my-posh, pokemon-colorscripts, nemo-preview, ttf-victor-mono, bluetui, impala). If the user says "core only", skip this step.
 
 Notes for correctness:
-- Some names in the manifest come from the AUR: the script's arrays are authoritative, but here is the list for cross-checking. Official-repo packages include hyprland, hyprlock, hypridle, hyprshot, waybar, swaync, rofi, rofi-emoji, swayosd, awww, quickshell, cliphist, ghostty, kitty, fastfetch, btop, cava, swappy, nemo, fcitx5 and its modules, sddm, kvantum, zsh, fzf, lsd, ttf-jetbrains-mono-nerd, adw-gtk-theme, libvips, blueman, bluez. AUR packages include aether (the theme engine), wallust-git, wlogout, apple_cursor, whitesur-icon-theme, ttf-segoe-ui-variable, zen-browser-bin, yay-bin and the extras above. If you are unsure whether a name resolves in the official repos, check with `pacman -Ss` before assuming.
+- Some names in the manifest come from the AUR: the script's arrays are authoritative, but here is the list for cross-checking. Official-repo packages include hyprland, hyprlock, hypridle, hyprshot, swaync, rofi, rofi-emoji, swayosd, awww, quickshell, cliphist, ghostty, kitty, fastfetch, btop, cava, swappy, nemo, fcitx5 and its modules, sddm, kvantum, zsh, fzf, lsd, ttf-jetbrains-mono-nerd, adw-gtk-theme, libvips, blueman, bluez. AUR packages include aether (the theme engine), wallust-git, wlogout, apple_cursor, whitesur-icon-theme, ttf-segoe-ui-variable, zen-browser-bin, yay-bin and the extras above. If you are unsure whether a name resolves in the official repos, check with `pacman -Ss` before assuming.
 - Passing `--needed` prevents reinstallation of already-installed packages. Keep it.
 - `pacman` will ask for the sudo password through the terminal. That is expected. `yay` may prompt on AUR package checks; answer with the default where safe.
 
 Do not enable any desktop session or start the compositor in this phase. Installation order matters only in the sense that everything must be installed before Phase 4.
 
 Verification gate: for each binary below, `command -v <binary>` must return a path:
-`hyprctl hyprland waybar swaync wlogout rofi awww aether wallust swayosd-client swayosd-server cliphist ghostty kitty fastfetch btop cava swappy nemo zsh fzf lsd quickshell sddm fcitx5 kvantum`
+`hyprctl hyprland swaync wlogout rofi awww aether wallust swayosd-client swayosd-server cliphist ghostty kitty fastfetch btop cava swappy nemo zsh fzf lsd quickshell sddm fcitx5 kvantum`
 Additionally `pacman -Q hyprland` and `pacman -Q sddm` must succeed. Record the versions of `hyprland` and `aether`.
 
 ## Phase 3 — Back up existing configuration
 
-Before any write to the user's config area, create a backup directory named `.config_backup_myarch_` followed by a timestamp (for example `~/.config_backup_myarch_20260817_120000`; no spaces) and copy every existing config directory that will be replaced into it, preserving the directory structure. At minimum, back up any of these that already exist: `hypr waybar swaync wlogout rofi kitty ghostty fastfetch nvim cava btop swappy swayosd aether viegphunt quickshell`.
+Before any write to the user's config area, create a backup directory named `.config_backup_myarch_` followed by a timestamp (for example `~/.config_backup_myarch_20260817_120000`; no spaces) and copy every existing config directory that will be replaced into it, preserving the directory structure. At minimum, back up any of these that already exist: `hypr swaync wlogout rofi kitty ghostty fastfetch nvim cava btop swappy swayosd aether viegphunt quickshell`.
 
 Also back up the existing `~/.zshrc` and `~/.bashrc` if present, by copying them into the backup directory.
 
@@ -239,7 +239,7 @@ awww query
 
 Binary sweep (Phases 2 and 8):
 ```bash
-for b in hyprctl hyprland waybar swaync wlogout rofi awww aether wallust \
+for b in hyprctl hyprland swaync wlogout rofi awww aether wallust \
          swayosd-client swayosd-server cliphist ghostty kitty fastfetch \
          btop cava swappy nemo zsh fzf lsd quickshell sddm fcitx5 kvantum; do
   command -v "$b" >/dev/null && echo "OK  $b" || echo "MISS $b"

@@ -2,7 +2,7 @@
 
 pacman_packages=(
     # Hyprland & Wayland Environment
-    hyprland hyprlock awww grim slurp swaync waybar rofi rofi-emoji yad hyprshot xdg-desktop-portal-hyprland xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+    hyprland hyprlock awww grim slurp swaync rofi rofi-emoji yad hyprshot xdg-desktop-portal-hyprland xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
 
     # System
     brightnessctl network-manager-applet bluez bluez-utils blueman pipewire wireplumber pavucontrol

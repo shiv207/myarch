@@ -48,10 +48,10 @@ Hyprland operates as the Wayland compositor. Key structural choices:
 The desktop color scheme adapts automatically to whichever wallpaper is active:
 - When a wallpaper is selected, Wallust extracts a dominant color palette.
 - Aether applies those colors across configuration files in real time.
-- Hyprland border colors, Waybar styles, GTK themes, and terminal color sequences update instantly without restarting the Wayland session.
+- Hyprland border colors, bar styles, GTK themes, and terminal color sequences update instantly without restarting the Wayland session.
 
-### 3. Status Bar (Waybar & Quickshell)
-The top bar is a lightweight Waybar build configured with custom CSS:
+### 3. Status Bar (Quickshell)
+The top bar is a Quickshell build written in QML, launched through a systemd user service (`omarchy-shell.service`):
 - Left: Workspace selector showing active and populated workspace states.
 - Center: Currently focused window title, auto-truncated to preserve visual balance.
 - Right: System indicators including network status, battery level, audio volume, and clock.
@@ -99,8 +99,7 @@ Rofi acts as the core modal interface:
 myarch/
 ├── config/
 │   ├── hypr/          # Hyprland compositor & modular configs
-│   ├── waybar/        # Top status bar CSS & JSON configs
-│   ├── quickshell/    # Quickshell components
+│   ├── quickshell/    # Quickshell bar (QML) & overview components
 │   ├── rofi/          # Application launcher & theme styles
 │   ├── swaync/        # Notification center configuration
 │   ├── swayosd/       # On-screen display styles

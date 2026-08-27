@@ -41,7 +41,7 @@ CORE_PAC=(
     # Compositor and Wayland pillars
     hyprland hyprlock hypridle hyprshot hyprpolkitagent
     xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-hyprland
-    waybar swaync wlogout rofi rofi-emoji yad awww quickshell
+    swaync wlogout rofi rofi-emoji yad awww quickshell
     swayosd cliphist wl-clipboard brightnessctl
     pipewire pipewire-pulse wireplumber pavucontrol
     # Terminals, shell and everyday tools
@@ -260,7 +260,7 @@ check() {
     fi
 }
 
-for bin in hyprland hyprctl waybar swaync wlogout rofi awww aether wallust \
+for bin in hyprland hyprctl swaync wlogout rofi awww aether wallust \
            swayosd-client swayosd-server cliphist ghostty kitty fastfetch \
            btop cava swappy nemo kvantum fcitx5 zsh fzf lsd quickshell; do
     check "$bin"

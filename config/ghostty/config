@@ -1,7 +1,9 @@
-font-family = JetBrainsMono Nerd Font
-font-size = 10
+# Omarchy theme palette (reloaded on omarchy-theme-set via SIGUSR2)
+config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
 
-theme = aether-generated
+font-family = JetBrainsMono Nerd Font
+font-size = 9
+
 background-opacity = 0.8
 
 keybind = ctrl+shift+v=ignore
