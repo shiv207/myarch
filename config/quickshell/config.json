@@ -43,11 +43,11 @@
       "codeFont": "JetBrains Mono NF"
     },
     "pixelSize": {
-      "textSmall": 13,
-      "textBase": 15,
-      "textMedium": 16,
-      "textLarge": 19,
-      "iconLarge": 22
+      "textSmall": 12,
+      "textBase": 14,
+      "textMedium": 15,
+      "textLarge": 17,
+      "iconLarge": 20
     }
   }
 }
