@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Example theme-set hook. Rename to drop .sample and chmod +x to enable.
+# echo "theme is $1" >> /tmp/theme-set.log

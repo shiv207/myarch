@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Optional fingerprint auth. Does not enroll until you run this yourself.
+set -euo pipefail
+if ! command -v fprintd-enroll >/dev/null; then
+    echo "Installing fprintd..."
+    sudo pacman -S --needed fprintd
+fi
+echo "Enroll a finger (Ctrl+C to skip PAM notes):"
+fprintd-enroll || true
+echo
+echo "To use the sensor for sudo, add this line to /etc/pam.d/sudo *above* pam_unix:"
+echo "  auth      sufficient pam_fprintd.so"
+echo "hyprlock can use fingerprint if your PAM stack for login already includes fprintd."
+echo "Lid-closed skip is not automatic here — cancel the prompt with Ctrl+C if the sensor is unreachable."

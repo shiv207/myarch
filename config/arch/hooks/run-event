@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Run executables in ~/.config/omarchy/hooks/<event>.d/
+set -euo pipefail
+event="${1:-}"
+[[ -n "$event" ]] || exit 0
+dir="$HOME/.config/omarchy/hooks/${event}.d"
+[[ -d "$dir" ]] || exit 0
+shift || true
+shopt -s nullglob
+for f in "$dir"/*; do
+    [[ -x "$f" && ! "$f" =~ \.sample$ ]] || continue
+    "$f" "$@" || true
+done

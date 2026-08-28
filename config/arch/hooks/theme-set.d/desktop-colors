@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Keep GTK ini files, terminal theme links, and Qt platform theme in lockstep
+# with ~/.local/state/omarchy/current/theme after omarchy-theme-set.
+
+set -euo pipefail
+
+THEME_DIR="$HOME/.local/state/omarchy/current/theme"
+COLORS="$THEME_DIR/colors.toml"
+
+gtk_theme=$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null | tr -d "'" || true)
+icon_theme=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null | tr -d "'" || true)
+mode=dark
+if [[ -f $COLORS ]] && command -v omarchy-theme-color >/dev/null; then
+  mode=$(omarchy-theme-color --file "$COLORS" mode 2>/dev/null || echo dark)
+fi
+
+[[ -n $gtk_theme ]] || gtk_theme=$([[ $mode == light ]] && echo Adwaita || echo Adwaita-dark)
+[[ -n $icon_theme ]] || icon_theme=Yaru-blue
+
+prefer_dark=1
+[[ $mode == light ]] && prefer_dark=0
+
+write_gtk_settings() {
+  local file="$1"
+  mkdir -p "$(dirname "$file")"
+  local font="JetBrainsMono Nerd Font 11"
+  local cursor="Adwaita"
+  local cursor_size=24
+  if [[ -f $file ]]; then
+    font=$(grep -E '^gtk-font-name=' "$file" | head -1 | cut -d= -f2- || true)
+    cursor=$(grep -E '^gtk-cursor-theme-name=' "$file" | head -1 | cut -d= -f2- || true)
+    cursor_size=$(grep -E '^gtk-cursor-theme-size=' "$file" | head -1 | cut -d= -f2- || true)
+  fi
+  [[ -n $font ]] || font="JetBrainsMono Nerd Font 11"
+  [[ -n $cursor ]] || cursor="Adwaita"
+  [[ -n $cursor_size ]] || cursor_size=24
+
+  cat >"$file" <<EOF
+[Settings]
+gtk-theme-name=$gtk_theme
+gtk-icon-theme-name=$icon_theme
+gtk-font-name=$font
+gtk-cursor-theme-name=$cursor
+gtk-cursor-theme-size=$cursor_size
+gtk-application-prefer-dark-theme=$prefer_dark
+EOF
+}
+
+write_gtk_settings "$HOME/.config/gtk-3.0/settings.ini"
+write_gtk_settings "$HOME/.config/gtk-4.0/settings.ini"
+
+mkdir -p "$HOME/.config/ghostty/themes" "$HOME/.config/btop/themes" "$HOME/.config/kitty"
+ln -sfn "$THEME_DIR/ghostty.conf" "$HOME/.config/ghostty/themes/current"
+[[ -f $THEME_DIR/btop.theme ]] && ln -sfn "$THEME_DIR/btop.theme" "$HOME/.config/btop/themes/current.theme"
+[[ -f $THEME_DIR/kitty.conf ]] && ln -sfn "$THEME_DIR/kitty.conf" "$HOME/.config/kitty/current-palette.conf"

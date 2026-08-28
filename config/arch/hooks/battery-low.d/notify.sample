@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Called with percentage in $1 when you wire a battery watcher to run-event.
+# notify-send "Battery" "${1:-?}%"

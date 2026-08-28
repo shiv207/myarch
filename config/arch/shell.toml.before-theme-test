@@ -1,0 +1,16 @@
+[font]
+base-size = 12
+
+[menu]
+background                = "#1e1e2e"
+background-alpha          = 1.0
+text                      = "#ffffff"
+border                    = "#ffffff"
+border-alpha              = 0.22
+scrim                     = "#16161a"
+scrim-alpha               = 0.20
+selected-background       = "#ffffff"
+selected-background-alpha = 0.18
+selected-text             = "#ffffff"
+selected-border           = "#ffffff"
+selected-border-alpha     = 0.30

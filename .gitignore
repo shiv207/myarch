@@ -6,3 +6,9 @@
 .DS_Store
 .cache/
 node_modules/
+bin/agy
+bin/cursor*
+bin/fetch
+*.tar.gz
+*.zip
+*.iso

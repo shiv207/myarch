@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Pin Wi-Fi band on the active connection (2.4 / 5 / 6 / auto).
+set -euo pipefail
+ssid="$(nmcli -t -f active,ssid dev wifi | awk -F: '$1=="yes"{print $2; exit}')"
+[[ -n "$ssid" ]] || { echo "Not on Wi-Fi"; exit 1; }
+want="${1:-}"
+if [[ -z "$want" ]]; then
+    echo "SSID: $ssid"
+    nmcli -f 802-11-wireless.band connection show "$ssid" 2>/dev/null || true
+    echo "Usage: wifi-band auto|2.4|5|6"
+    exit 0
+fi
+case "$want" in
+    auto) band="" ;;
+    2.4|bg) band="bg" ;;
+    5|a) band="a" ;;
+    6) band="6ghz" ;;
+    *) echo "Usage: wifi-band auto|2.4|5|6"; exit 1 ;;
+esac
+nmcli connection modify "$ssid" 802-11-wireless.band "$band"
+nmcli connection up "$ssid"
+echo "Band set to ${want} for $ssid"

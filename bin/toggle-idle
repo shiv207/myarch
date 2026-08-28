@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+FLAG="$HOME/.local/state/desktop/toggles/idle-off"
+mkdir -p "$(dirname "$FLAG")"
+if [[ -f "$FLAG" ]]; then
+    hypridle &
+    rm -f "$FLAG"
+    notify-send "Idle" "on (will lock)" 2>/dev/null || true
+else
+    pkill -x hypridle 2>/dev/null || true
+    touch "$FLAG"
+    notify-send "Idle" "off (stay awake)" 2>/dev/null || true
+fi

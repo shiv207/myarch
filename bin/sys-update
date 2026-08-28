@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Packages + firmware. No distro migrations, snapshots, or channel switching.
+set -euo pipefail
+echo "==> Official repos + AUR (yay)"
+yay -Syu
+if command -v fwupdmgr >/dev/null; then
+    echo "==> Firmware (fwupd)"
+    fwupdmgr refresh || true
+    fwupdmgr update || true
+else
+    echo "Install fwupd for firmware updates: sudo pacman -S fwupd"
+fi
+"$HOME/.config/omarchy/hooks/run-event" post-update || true
+echo "Done."

@@ -1,29 +1,24 @@
 #!/usr/bin/env bash
+set -euo pipefail
+theme="$(cat "$HOME/.config/arch/current" 2>/dev/null || true)"
+state="$HOME/.cache/awww/cycle_index"
+mkdir -p "$(dirname "$state")"
 
-themes_dir="$HOME/.cache/omarchy-themes"
-state_dir="$HOME/.cache/awww"
-theme_file="$state_dir/current_theme"
-index_file="$state_dir/cycle_index"
-
-theme=$(cat "$theme_file" 2>/dev/null)
-
-wallpapers=()
-if [ -n "$theme" ] && [ -d "$themes_dir/$theme" ]; then
-    mapfile -t wallpapers < <(find "$themes_dir/$theme" -maxdepth 2 -type f \( -name background -o -path '*/wallpapers/*' \) | sort)
+files=()
+if [[ -n "$theme" ]]; then
+    mapfile -t files < <(
+        find "$HOME/.config/arch/themes/$theme/backgrounds" "$HOME/.config/arch/backgrounds/$theme" \
+            -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) 2>/dev/null | sort
+    )
 fi
-if [ ${#wallpapers[@]} -eq 0 ]; then
-    exit 0
+if [[ ${#files[@]} -eq 0 ]]; then
+    mapfile -t files < <(find "$HOME/Pictures/Wallpapers" -maxdepth 1 -type f | sort)
 fi
-if [ ${#wallpapers[@]} -eq 0 ]; then
-    exit 0
-fi
+[[ ${#files[@]} -gt 0 ]] || exit 0
 
 index=0
-[ -f "$index_file" ] && index=$(cat "$index_file" 2>/dev/null)
+[[ -f "$state" ]] && index=$(cat "$state")
 index=$((index + 1))
-if [ "$index" -ge "${#wallpapers[@]}" ]; then
-    index=0
-fi
-echo "$index" > "$index_file"
-
-awww img "${wallpapers[$index]}" --transition-type any --transition-duration 2
+[[ "$index" -ge ${#files[@]} ]] && index=0
+echo "$index" > "$state"
+awww img "${files[$index]}" --transition-type any --transition-duration 2

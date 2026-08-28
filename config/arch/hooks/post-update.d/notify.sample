@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Rename (drop .sample) and chmod +x to enable.
+# notify-send "Update" "packages finished"

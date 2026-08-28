@@ -3,6 +3,8 @@ DEVICE=nvidia_0
 case $1 in
   up|raise) brightnessctl -d "$DEVICE" s 5%+ ;;
   down|lower) brightnessctl -d "$DEVICE" s 5%- ;;
+  max) brightnessctl s 100% ;;
+  min) brightnessctl s 1% ;;
 esac
 CURRENT=$(brightnessctl -d "$DEVICE" get)
 MAX=$(brightnessctl -d "$DEVICE" max)

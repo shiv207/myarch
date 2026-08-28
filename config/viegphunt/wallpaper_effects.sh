@@ -8,5 +8,8 @@ rm -f "$destination_wallpaper_dir/normal.png"
 vipsthumbnail "$current_wallpaper_path" -o "$destination_wallpaper_dir/normal.png"
 
 if [ -n "$current_wallpaper_path" ] && [ -f "$current_wallpaper_path" ]; then
-    aether --generate "$current_wallpaper_path"
+    # Palette packs own colors when ~/.config/arch/current exists. Super+Alt+A still runs aether.
+    if [ ! -f "$HOME/.config/arch/current" ]; then
+        aether --generate "$current_wallpaper_path"
+    fi
 fi

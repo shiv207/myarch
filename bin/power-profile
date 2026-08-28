@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Wrapper around powerprofilesctl. No AC/battery memory — set the profile you want.
+set -euo pipefail
+if ! command -v powerprofilesctl >/dev/null; then
+    echo "Install power-profiles-daemon: sudo pacman -S power-profiles-daemon"
+    exit 1
+fi
+if [[ $# -eq 0 || "${1:-}" == "list" ]]; then
+    powerprofilesctl list
+    exit 0
+fi
+powerprofilesctl set "$1"
+powerprofilesctl get

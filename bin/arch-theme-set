@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+/home/shiv/Developer/arch/bin/arch-theme-set "$@"
+res=$?
+
+THEME_PATH="$HOME/.local/state/arch/current/theme"
+if [[ -f "$THEME_PATH/colors.toml" ]]; then
+  COLORS="$(base64 -w0 "$THEME_PATH/colors.toml" 2>/dev/null)"
+  SHELL_CONF="$([[ -f "$THEME_PATH/shell.toml" ]] && base64 -w0 "$THEME_PATH/shell.toml" 2>/dev/null || echo "")"
+  if [[ -n "$COLORS" ]]; then
+    /home/shiv/Developer/arch/bin/arch-shell shell applyTheme "$COLORS" "$SHELL_CONF" >/dev/null 2>&1 || true
+  fi
+fi
+
+exit $res

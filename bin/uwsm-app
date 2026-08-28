@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Minimal uwsm-app stand-in: Omarchy wraps launches with `uwsm-app -- cmd`.
+if [[ "${1:-}" == "--" ]]; then
+    shift
+fi
+exec "$@"

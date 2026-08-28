@@ -1,49 +1,34 @@
 #!/usr/bin/env bash
+# Super+T: pick a palette pack. Does not touch nvim/agents.
 
-if pidof rofi > /dev/null; then
+if pidof rofi >/dev/null; then
     pkill rofi
 fi
 
-CACHE_DIR="$HOME/.cache/omarchy-themes"
-REPO_BASE="https://raw.githubusercontent.com/basecamp/omarchy/master/themes"
+THEMES_DIR="$HOME/.config/arch/themes"
+[[ -d "$THEMES_DIR" ]] || exit 1
 
-declare -A THEME_SLUG=(
-    [Catppuccin]=catppuccin
-    [Tokyo Night]=tokyo-night
-    [Gruvbox]=gruvbox
-    [Nord]=nord
-)
+selected="$(
+    find "$THEMES_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort | while read -r slug; do
+        [[ -f "$THEMES_DIR/$slug/colors.toml" ]] || continue
+        icon="$THEMES_DIR/$slug/preview.png"
+        if [[ -f "$icon" ]]; then
+            printf '%s\0icon\x1f%s\n' "$slug" "$icon"
+        else
+            printf '%s\n' "$slug"
+        fi
+    done | rofi -dmenu -p "Theme"
+)"
 
-declare -A THEME_BG=(
-    [catppuccin]=1-totoro.png
-    [tokyo-night]=0-swirl-buck.jpg
-    [gruvbox]=1-the-backwater.jpg
-    [nord]=1-city-view.png
-)
+[[ -z "$selected" ]] && exit 0
 
-mkdir -p "$CACHE_DIR"
+arch-theme-set "$selected"
 
-for slug in "${THEME_SLUG[@]}"; do
-    dir="$CACHE_DIR/$slug"
-    mkdir -p "$dir"
-    [ ! -f "$dir/icon.png" ] && curl -sL -o "$dir/icon.png" "$REPO_BASE/$slug/preview.png"
-    [ ! -f "$dir/colors.toml" ] && curl -sL -o "$dir/colors.toml" "$REPO_BASE/$slug/colors.toml"
-    [ ! -f "$dir/background" ] && curl -sL -o "$dir/background" "$REPO_BASE/$slug/backgrounds/${THEME_BG[$slug]}"
-done
+# Push the new palette to the live shell explicitly.
+THEME_PATH="$HOME/.local/state/arch/current/theme"
+COLORS=$(base64 -w0 "$THEME_PATH/colors.toml" 2>/dev/null)
+SHELL_CONF=$(base64 -w0 "$THEME_PATH/shell.toml" 2>/dev/null)
+[[ -n "$COLORS" ]] && arch-shell shell applyTheme "$COLORS" "$SHELL_CONF" >/dev/null 2>&1
 
-selected_theme=$(for name in "${!THEME_SLUG[@]}"; do
-    echo -en "$name\0icon\x1f$CACHE_DIR/${THEME_SLUG[$name]}/icon.png\n"
-done | rofi -dmenu -p "Theme")
+notify-send "Theme" "$selected" 2>/dev/null || true
 
-[[ -z "$selected_theme" ]] && exit 0
-
-slug="${THEME_SLUG[$selected_theme]}"
-dir="$CACHE_DIR/$slug"
-
-aether --import-colors-toml "$dir/colors.toml" --wallpaper "$dir/background"
-
-echo "$slug" > "$HOME/.cache/awww/current_theme"
-
-awww img "$dir/background" --transition-type any --transition-duration 2
-
-notify-send "Theme applied" "$selected_theme" -i "$dir/icon.png"

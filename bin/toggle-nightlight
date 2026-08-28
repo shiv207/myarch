@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+FLAG="$HOME/.local/state/desktop/toggles/nightlight-on"
+mkdir -p "$(dirname "$FLAG")"
+if [[ -f "$FLAG" ]]; then
+    hyprctl hyprsunset identity 2>/dev/null || hyprctl hyprsunset temperature 6500
+    rm -f "$FLAG"
+    notify-send "Night light" "off" 2>/dev/null || true
+else
+    hyprctl hyprsunset temperature 4000
+    touch "$FLAG"
+    notify-send "Night light" "on" 2>/dev/null || true
+fi

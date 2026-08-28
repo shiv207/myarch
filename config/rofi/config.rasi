@@ -45,7 +45,7 @@ configuration {
     text-color:       @foreground;
 }
 #element.selected.normal {
-    background-color: @selected-background;
+    background-color: @active-background;
     text-color:       @foreground;
 }
 element-text, element-icon {

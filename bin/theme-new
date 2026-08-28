@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+slug="${1:-}"
+[[ -n "$slug" ]] || { echo "Usage: theme-new <slug>"; exit 1; }
+dest="$HOME/.config/omarchy/themes/$slug"
+[[ ! -e "$dest" ]] || { echo "Already exists: $dest"; exit 1; }
+src="$HOME/.config/omarchy/themes/tokyo-night"
+[[ -d "$src" ]] || { echo "Missing base palette: $src"; exit 1; }
+mkdir -p "$dest/backgrounds"
+cp "$src/colors.toml" "$dest/"
+[[ -f "$src/icons.theme" ]] && cp "$src/icons.theme" "$dest/"
+echo "Created $dest — edit colors.toml, add backgrounds/, then: theme-set $slug"

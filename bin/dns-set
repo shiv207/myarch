@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Override DNS for the active NetworkManager connection.
+# Usage: dns-set [dhcp|cloudflare|google|1.1.1.1[,1.0.0.1]]
+set -euo pipefail
+conn="$(nmcli -t -f NAME,DEVICE connection show --active | awk -F: 'NR==1{print $1}')"
+[[ -n "$conn" ]] || { echo "No active connection"; exit 1; }
+
+want="${1:-}"
+if [[ -z "$want" ]]; then
+    echo "Connection: $conn"
+    nmcli -g ipv4.dns,ipv4.ignore-auto-dns connection show "$conn"
+    echo "Usage: dns-set dhcp|cloudflare|google|<ip>[,<ip>]"
+    exit 0
+fi
+
+case "${want,,}" in
+    dhcp|auto)
+        nmcli connection modify "$conn" ipv4.ignore-auto-dns no ipv4.dns ""
+        ;;
+    cloudflare)
+        nmcli connection modify "$conn" ipv4.ignore-auto-dns yes ipv4.dns "1.1.1.1 1.0.0.1"
+        ;;
+    google)
+        nmcli connection modify "$conn" ipv4.ignore-auto-dns yes ipv4.dns "8.8.8.8 8.8.4.4"
+        ;;
+    *)
+        dns="${want//,/ }"
+        nmcli connection modify "$conn" ipv4.ignore-auto-dns yes ipv4.dns "$dns"
+        ;;
+esac
+nmcli connection up "$conn"
+echo "DNS updated for $conn"

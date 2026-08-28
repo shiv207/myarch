@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Pick a monospace font for GTK (terminals pick it up on restart).
+set -euo pipefail
+font="$(fc-list : family | cut -d, -f1 | grep -i 'nerd\|mono\|code' | sort -u | rofi -dmenu -p "Font")"
+[[ -z "$font" ]] && exit 0
+gsettings set org.gnome.desktop.interface monospace-font-name "$font 12"
+notify-send "Font" "$font (new terminals pick this up)" 2>/dev/null || true
+"$HOME/.config/omarchy/hooks/run-event" font-set "$font"

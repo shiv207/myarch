@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ssid="$(nmcli -t -f active,ssid dev wifi | awk -F: '$1=="yes"{print $2; exit}')"
+[[ -n "$ssid" ]] || { echo "Not on Wi-Fi"; exit 1; }
+pass="$(nmcli -s -g 802-11-wireless-security.psk connection show "$ssid" 2>/dev/null || true)"
+payload="WIFI:T:WPA;S:${ssid};P:${pass};;"
+if command -v qrencode >/dev/null; then
+    qrencode -t ANSIUTF8 "$payload"
+else
+    echo "SSID: $ssid"
+    echo "Install qrencode for a QR code: sudo pacman -S qrencode"
+fi
